@@ -1,0 +1,51 @@
+# /cost-manager-frontend/
+# Project: Cost Manager Front End
+# File: Project File Tree
+# Description: Directory structure of the Cost Manager Front End project (excluding unnecessary files like .idea and printfiletree.py).
+# Updated: 2025-09-12
+
+/cost-manager-frontend
+├── .gitignore
+├── docs
+│   ├── Cost_Manager_Front_End.md
+│   └── JS_style_and_doc_guideline.md
+├── file_tree.txt
+├── package-lock.json
+├── package.json
+├── README.md
+├── public
+│   ├── index.html
+│   └── resources
+│       └── icons
+│           ├── email.png
+│           ├── gear5.png
+│           ├── github.png
+│           ├── joyboy.png
+│           └── linkedin.png
+├── src
+│   ├── App.js
+│   ├── components
+│   │   ├── AboutModal.jsx
+│   │   ├── AddCostForm.jsx
+│   │   ├── ChartsPanel.jsx
+│   │   ├── Footer.jsx
+│   │   ├── HomeTitle.jsx
+│   │   ├── Layout.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── ReportPanel.jsx
+│   │   └── SettingsPanel.jsx
+│   ├── index.js
+│   ├── pages
+│   │   ├── AddCostPage.jsx
+│   │   ├── ChartsPage.jsx
+│   │   ├── HomePage.jsx
+│   │   ├── ReportPage.jsx
+│   │   └── SettingsPage.jsx
+│   ├── services
+│   │   ├── exchange.js
+│   │   ├── idb.js
+│   │   └── settings.js
+│   └── theme.js
+└── vanilla_test
+    ├── idb.js
+    └── test.html

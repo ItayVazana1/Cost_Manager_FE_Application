@@ -1,0 +1,81 @@
+/* /src/styles/home-title.css
+ * Project: Cost Manager Front End
+ * File: src/styles/home-title.css
+ * Description: Animated multi-stop gradient title with SVG glow and typewriter caret effect.
+ * Updated: 2025-09-11
+ */
+
+/* ==========================================================================
+   Title Glow and Gradient
+   ========================================================================== */
+
+.h1-glow {
+    place-self: center;
+    display: inline-block;
+    filter: url(#glow);
+    text-align: center;
+    text-transform: uppercase;
+    --dur: 5000ms;
+    --g1: #8a2be2;
+    --g2: #ffa600;
+    --g3: #ea356e;
+    --g4: #eaa2b9;
+    --g5: #00ffa8;
+}
+
+.h1-glow.multi-stops.slide > * {
+    background: linear-gradient(
+            90deg,
+            var(--g1) 0%,
+            var(--g2) 12.5%,
+            var(--g3) 25%,
+            var(--g4) 37.5%,
+            var(--g5) 50%,
+            var(--g1) 62.5%,
+            var(--g2) 75%,
+            var(--g3) 87.5%,
+            var(--g4) 100%
+    );
+    background-size: 200% auto;
+    background-position: 0% 50%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: slideBackAndForth var(--dur) ease-in-out infinite alternate;
+}
+
+@keyframes slideBackAndForth {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+/* ==========================================================================
+   Typewriter Caret
+   ========================================================================== */
+
+.typewriter {
+    font-size: 1rem;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.typewriter-caret {
+    display: inline-block;
+    margin-left: 2px;
+    animation: caretBlink 1s step-end infinite;
+    opacity: 0.8;
+}
+
+@keyframes caretBlink {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}

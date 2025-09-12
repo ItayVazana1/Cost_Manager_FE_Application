@@ -1,0 +1,56 @@
+/* /src/styles/footer.css
+ * Project: Cost Manager Front End
+ * File: src/styles/footer.css
+ * Description: Footer styles including animated quake effect on text and glow effect on icon.
+ * Updated: 2025-09-12
+ */
+
+/* ==========================================================================
+   Footer Text
+   ========================================================================== */
+
+.footer-text {
+    transition: text-shadow 120ms ease;
+}
+
+.footer-text:hover {
+    animation: quake 0.5s infinite;
+    text-shadow:
+            0 0 6px red,
+            0 0 12px red,
+            0 0 18px red,
+            0 2px 0 rgba(0, 0, 0, 0.9);
+}
+
+@keyframes quake {
+    0%   { transform: translate(0, 0); }
+    20%  { transform: translate(-2px, 2px); }
+    40%  { transform: translate(2px, -2px); }
+    60%  { transform: translate(-2px, 1px); }
+    80%  { transform: translate(2px, 1px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* ==========================================================================
+   Footer Icon Glow
+   ========================================================================== */
+
+.footer-icon {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.footer-icon:hover {
+    animation: glow 0.25s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4));
+    }
+    to {
+        filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.95));
+    }
+}
