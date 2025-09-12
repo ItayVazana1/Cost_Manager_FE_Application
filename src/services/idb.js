@@ -1,4 +1,4 @@
-/** /src/services/idb.js
+/**
  * Project: Cost Manager Front End
  * File: src/services/idb.js
  * Description: IndexedDB helper module for cost item storage and reporting.
@@ -15,7 +15,7 @@ const STORE_NAME = 'costs';
 
 /**
  * Open or upgrade the database.
- * @param {string} [dbName='costsdb'] - Database name.
+ * @param {string} [dbName='costsdb] - Database name.
  * @param {number} [dbVersion=1] - Database version.
  * @returns {Promise<IDBDatabase>} Promise resolving to the opened database.
  */
@@ -46,7 +46,7 @@ export function openCostsDB(dbName = DB_NAME, dbVersion = DB_VERSION) {
 /**
  * Add a new cost item.
  * @param {{ sum:number, currency:string, category:string, description:string }} cost - Cost payload.
- * @returns {Promise<{ sum:number, currency:string, category:string, description:string, date:Date }>} Promise resolving to the stored item.
+ * @returns {Promise<{ id?:number, sum:number, currency:string, category:string, description:string, date:Date }>} Stored item.
  */
 export async function addCost(cost) {
     const db = await openCostsDB();
@@ -74,11 +74,17 @@ export async function addCost(cost) {
 
 /**
  * Get a monthly report with currency conversion.
+ * Each cost will contain `date` as ISO string (YYYY-MM-DD).
  * @param {number} year - Full year (e.g., 2025).
  * @param {number} month - Month 1–12.
  * @param {string} [targetCurrency='USD'] - Target currency.
  * @param {Record<string, number>} [exchangeRates={ USD:1 }] - Exchange rates map (USD base).
- * @returns {Promise<{ year:number, month:number, costs:Array, total:{ currency:string, total:number } }>} Promise resolving to the report.
+ * @returns {Promise<{
+ *   year:number,
+ *   month:number,
+ *   costs:Array<{sum:number,currency:string,category:string,description:string,date:string}>,
+ *   total:{ currency:string, total:number }
+ * }>}
  */
 export async function getReport(year, month, targetCurrency = 'USD', exchangeRates = { USD: 1 }) {
     const db = await openCostsDB();
@@ -91,30 +97,40 @@ export async function getReport(year, month, targetCurrency = 'USD', exchangeRat
         request.onerror = () => reject(request.error);
     });
 
+    // Filter for the requested (year, month)
     const filteredCosts = allItems.filter((item) => {
-        const date = new Date(item.date);
-        return date.getFullYear() === year && date.getMonth() + 1 === month;
+        const d = new Date(item.date);
+        return d.getFullYear() === year && d.getMonth() + 1 === month;
     });
 
-    const costsWithDay = filteredCosts.map((item) => ({
-        sum: item.sum,
-        currency: item.currency,
-        category: item.category,
-        description: item.description,
-        date: { day: new Date(item.date).getDate() }
-    }));
+    // Normalize to ISO date (YYYY-MM-DD) in UTC to avoid TZ drift
+    const costsWithDate = filteredCosts.map((item) => {
+        const d = new Date(item.date);
+        const iso = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
+            .toISOString()
+            .slice(0, 10);
+        return {
+            sum: item.sum,
+            currency: item.currency,
+            category: item.category,
+            description: item.description,
+            date: iso
+        };
+    });
 
-    const totalUSD = filteredCosts.reduce((sum, item) => {
+    // Sum in USD (assuming exchangeRates are relative to USD)
+    const totalUSD = filteredCosts.reduce((acc, item) => {
         const rate = exchangeRates[item.currency] || 1;
-        return sum + item.sum / rate;
+        return acc + item.sum / rate;
     }, 0);
 
+    // Convert to target currency
     const convertedTotal = totalUSD * (exchangeRates[targetCurrency] || 1);
 
     return {
         year,
         month,
-        costs: costsWithDay,
+        costs: costsWithDate,
         total: {
             currency: targetCurrency,
             total: Math.round(convertedTotal * 100) / 100

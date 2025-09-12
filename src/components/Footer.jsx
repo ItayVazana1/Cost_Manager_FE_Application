@@ -31,7 +31,7 @@ const FOOTER_ICON = '/resources/icons/joyboy.png';
 /** @type {Dev[]} */
 const DEVS = [
     { name: 'Itay Vazana', linkedin: 'https://linkedin.com/in/itayvazana', github: 'https://github.com/ItayVazana1', website: 'mailto:itay.vazana.b@gmail.com' },
-    { name: 'On Bonderman', linkedin: 'https://linkedin.com/in/devtwo', github: 'https://github.com/devtwo', website: 'https://devtwo.dev' }
+    { name: 'Onn Bonderman', linkedin: 'https://www.linkedin.com/in/onn-bonderman-ba45b0247/', github: 'https://github.com/bonder0007', website: 'mailto:onnx24@gmail.com' }
 ];
 
 /** =========================================================================
