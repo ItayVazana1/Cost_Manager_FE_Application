@@ -1,0 +1,51 @@
+<!-- /vanilla_test/test.html
+  Project: Cost Manager Front End
+  File: vanilla_test/test.html
+  Description: Test page for vanilla idb.js library. Opens DB, adds costs, and logs report to console.
+  Updated: 2025-09-12
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IDB Test</title>
+</head>
+<body>
+<script src="idb.js"></script>
+<script>
+    /**
+     * Run a basic test sequence against the global idb API.
+     * - Opens the database
+     * - Adds two sample costs
+     * - Generates a monthly report
+     */
+    async function test() {
+        const db = await idb.openCostsDB('costsdb', 1);
+
+        const result1 = await idb.addCost({
+            sum: 200,
+            currency: 'USD',
+            category: 'FOOD',
+            description: 'Pizza'
+        });
+
+        const result2 = await idb.addCost({
+            sum: 400,
+            currency: 'USD',
+            category: 'CAR',
+            description: 'Fuel'
+        });
+
+        const report = await idb.getReport(2025, 9, 'USD');
+
+        console.log('DB opened:', db);
+        console.log('First cost added:', result1);
+        console.log('Second cost added:', result2);
+        console.log('Report:', report);
+    }
+
+    test();
+</script>
+</body>
+</html>
